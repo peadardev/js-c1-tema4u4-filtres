@@ -3,7 +3,9 @@
     <header class="d-flex align-items-center justify-content-between mb-3">
       <h1 class="h4 mb-0">Llista de productes</h1>
     </header>
-    <RouterLink to="/" class="text-decoration-underline">Torna a la pàgina de cerca</RouterLink>
+    <RouterLink :to="{ name: 'search', query: route.query }" class="text-decoration-underline"
+      >Torna a la pàgina de cerca</RouterLink
+    >
     <br /><br />
     <div class="fs-5 fw-semibold">
       <p>Resultat ({{ numFound }})</p>
@@ -33,9 +35,8 @@ import { RouterLink, useRoute } from 'vue-router';
 import { ref, computed } from 'vue';
 import { products } from '@/assets/llista.ts';
 const route = useRoute();
+const word = ref(typeof route.query.word === 'string' ? route.query.word : '');
 
-const word = ref(route.query.word as string);
-console.log('word: ' + word.value);
 const foundProducts = computed(() => {
   if (!word.value) return [];
   return products.filter((p) => p.name.toLowerCase().includes(word.value.toLowerCase()));

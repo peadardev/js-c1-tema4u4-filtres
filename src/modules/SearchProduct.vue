@@ -13,15 +13,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-
 const route = useRoute();
 const router = useRouter();
 
-////////////
 const searchText = ref('');
-//const router = useRouter();
+
+if (typeof route.query.word === 'string') searchText.value = route.query.word;
+watch(
+  () => route.query.word,
+  (word) => {
+    searchText.value = typeof word === 'string' ? word : '';
+  }
+);
 
 function searchProducts() {
   router.push({
